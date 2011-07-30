@@ -42,6 +42,20 @@ end
   
 # 年間売買手数料
 puts "=== 年間売買手数料 ==="
+sql = <<SQL
+  SELECT SUM(commission)+SUM(tax) AS price
+  FROM(
+  SELECT stockcode,stockname,commission,tax
+  FROM spot
+  UNION ALL
+  SELECT stockcode,stockname,commission,tax
+  FROM margine
+  ) AS t
+  ;
+SQL
+db.execute(sql) do |row|
+  p row
+end
 
 # 月毎売買手数料
 puts "=== 月毎売買手数料 ==="
