@@ -4,6 +4,23 @@ require 'sqlite3'
 
 db = SQLite3::Database.new("./db/records.sqlite3")
 
+# 年間損益
+puts "=== 年間損益  ==="
+sql = <<SQL
+  SELECT SUM(deliverymoney) AS price
+  FROM(
+  SELECT stockcode,stockname,deliverymoney
+  FROM spot
+  UNION ALL
+  SELECT stockcode,stockname,deliverymoney
+  FROM margine
+  ) AS t
+  ;
+SQL
+db.execute(sql) do |row|
+  p row
+end
+
 # 年間損益(銘柄単位)
 puts "=== 年間損益（銘柄単位）==="
 sql = "
