@@ -23,7 +23,7 @@ end
 
 # 年間損益(銘柄単位)
 puts "=== 年間損益（銘柄単位）==="
-sql = "
+sql = <<SQL
   SELECT stockcode,stockname,SUM(deliverymoney) AS price
   FROM(
   SELECT stockcode,stockname,deliverymoney
@@ -34,11 +34,20 @@ sql = "
   ) AS t
   GROUP BY stockcode
   ORDER BY price
-  ;"
+  ;
+SQL
 db.execute(sql) do |row|
   p row
 end
   
+# 年間売買手数料
+puts "=== 年間売買手数料 ==="
 
 # 月毎売買手数料
 puts "=== 月毎売買手数料 ==="
+
+# 年間金利
+puts "=== 年間金利 ==="
+
+# 金利（銘柄単位）
+puts "=== 金利（銘柄単位） ==="
