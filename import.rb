@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby -Ku
 require 'rubygems'
 require 'csv'
 require 'sqlite3'
