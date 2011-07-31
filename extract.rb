@@ -40,7 +40,7 @@ sql = <<SQL
 SQL
 db.execute(sql) do |row|
   printf("%4d", row[0])
-  print(sprintf("|%-*s|",65 + row[1].length - row[1].tosjis.length, row[1]))
+  print(sprintf("|%-*s|",63 + row[1].length - row[1].tosjis.length, row[1]))
   printf("%10d|\n", row[2])
 end
   
@@ -99,7 +99,7 @@ sql = <<SQL
 SQL
 db.execute(sql) do |row|
   printf("%4d", row[0])
-  print(sprintf("|%-*s|",65 + row[1].length - row[1].tosjis.length, row[1]))
+  print(sprintf("|%-*s|",63 + row[1].length - row[1].tosjis.length, row[1]))
   printf("%10d|%10d|\n", row[2], row[3])
 end
 
