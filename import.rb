@@ -72,7 +72,7 @@ db.execute(sql)
 
 spot.each do |one|
   new_item = {
-  :agreementdate => one[0],
+  :agreementdate => one[0].gsub(/\//,'-'),
   :agreementno => one[1],
   :stockcode => one[2],
   :stockname => one[3],
@@ -85,7 +85,7 @@ spot.each do |one|
   :commission => one[10],
   :commissiontax => one[11],
   :deliverymoney => one[12],
-  :deliveryday => one[13]
+  :deliveryday => one[13].gsub(/\//,'-')
   }
 
   sql = "INSERT INTO spot VALUES(
@@ -117,7 +117,7 @@ db.execute(sql)
 CSV.open("./data/torihikiShinyo.csv","r") do |row|
 #  margine << row
   new_item = {
-  :agreementdate => row[0],
+  :agreementdate => row[0].gsub(/\//,'-'),
   :agreementno => row[1],
   :stockcode => row[2],
   :stockname => row[3],
@@ -140,7 +140,7 @@ CSV.open("./data/torihikiShinyo.csv","r") do |row|
   :lendprice => row[20],
   :stockprice => row[21],
   :deliverymoney => row[22],
-  :deliveryday => row[23]
+  :deliveryday => row[23].gsub(/\//,'-')
   }
 
   sql = "INSERT INTO margine VALUES(
