@@ -62,6 +62,13 @@ puts "=== 月毎売買手数料 ==="
 
 # 年間金利
 puts "=== 年間金利 ==="
+sql = <<SQL
+  SELECT SUM(lendprice)
+  FROM margine
+SQL
+db.execute(sql) do |row|
+  p row
+end
 
 # 金利（銘柄単位）
 puts "=== 金利（銘柄単位） ==="
