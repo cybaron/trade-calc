@@ -60,15 +60,24 @@ end
 # 月毎売買手数料
 puts "=== 月毎売買手数料 ==="
 
-# 年間金利
-puts "=== 年間金利 ==="
+# 年間買方金利・貸株料
+puts "=== 年間 買方金利・貸株料 ==="
 sql = <<SQL
-  SELECT SUM(lendprice)
+  SELECT SUM(rates),SUM(lendprice)
   FROM margine
 SQL
 db.execute(sql) do |row|
   p row
 end
 
-# 金利（銘柄単位）
-puts "=== 金利（銘柄単位） ==="
+# 買方金利・貸株料（銘柄単位）
+puts "=== 買方金利・貸株料（銘柄単位） ==="
+sql = <<SQL
+  SELECT stockcode,stockname,SUM(rates),SUM(lendprice)
+  FROM margine
+  GROUP BY stockcode
+  ORDER BY stockcode
+SQL
+db.execute(sql) do |row|
+  p row
+end
