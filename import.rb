@@ -22,7 +22,7 @@ unless(db.execute("SELECT tbl_name FROM sqlite_master WHERE type == 'table'").fl
   agreementamount,
   agreementprice,
   commission,
-  tax,
+  commissiontax,
   deliverymoney,
   deliveryday
   );"
@@ -44,7 +44,7 @@ unless(db.execute("SELECT tbl_name FROM sqlite_master WHERE type == 'table'").fl
   amount,
   agreementprice,
   commission,
-  tax,
+  commissiontax,
   agreementamount,
   price,
   newcommission,
@@ -83,7 +83,7 @@ spot.each do |one|
   :agreementamount => one[8],
   :agreementprice => one[9],
   :commission => one[10],
-  :tax => one[11],
+  :commissiontax => one[11],
   :deliverymoney => one[12],
   :deliveryday => one[13]
   }
@@ -101,7 +101,7 @@ spot.each do |one|
   :agreementamount,
   :agreementprice,
   :commission,
-  :tax,
+  :commissiontax,
   :deliverymoney,
   :deliveryday
   )"
@@ -129,7 +129,7 @@ CSV.open("./data/torihikiShinyo.csv","r") do |row|
   :agreementamount => row[9],
   :agreementprice => row[10],
   :commission => row[11],
-  :tax => row[12],
+  :commissiontax => row[12],
   :amount => row[13],
   :price => row[14],
   :newcommission => row[15],
@@ -157,7 +157,7 @@ CSV.open("./data/torihikiShinyo.csv","r") do |row|
   :agreementamount,
   :agreementprice,
   :commission,
-  :tax,
+  :commissiontax,
   :amount,
   :price,
   :newcommission,

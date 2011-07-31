@@ -43,12 +43,12 @@ end
 # 年間売買手数料
 puts "=== 年間売買手数料 ==="
 sql = <<SQL
-  SELECT SUM(commission)+SUM(tax) AS price
+  SELECT SUM(commission)+SUM(commissiontax) AS price
   FROM(
-  SELECT stockcode,stockname,commission,tax
+  SELECT stockcode,stockname,commission,commissiontax
   FROM spot
   UNION ALL
-  SELECT stockcode,stockname,commission,tax
+  SELECT stockcode,stockname,commission,commissiontax
   FROM margine
   ) AS t
   ;
