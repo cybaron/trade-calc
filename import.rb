@@ -3,12 +3,14 @@ require 'rubygems'
 require 'csv'
 require 'sqlite3'
 require 'kconv'
+require 'fixednumber'
 
 spot = Array.new
 margine = Array.new
 
 #DBにテーブルを準備
-db = SQLite3::Database.new("./db/records.sqlite3")
+#db = SQLite3::Database.new("./db/records.sqlite3")
+db = SQLite3::Database.new("#{PATH_DB}")
 unless(db.execute("SELECT tbl_name FROM sqlite_master WHERE type == 'table'").flatten.include?("spot"))
   sql = "CREATE TABLE spot(
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -61,13 +63,13 @@ unless(db.execute("SELECT tbl_name FROM sqlite_master WHERE type == 'table'").fl
   db.execute(sql)
 end
 
-if File.exist?("./data/torihikiGenbutsu.csv") then
+if File.exist?("#{PATH_DATA_GENBUTSU}") then
   sql = "DELETE FROM spot;"
   db.execute(sql)
 end
 
 #現物CSVデータの読み込み
-CSV.open("./data/torihikiGenbutsu.csv","r") do |row|
+CSV.open("#{PATH_DATA_GENBUTSU}","r") do |row|
   next if row[2].to_i == 0  # CSVヘッダ部除外
   new_item = {
   :agreementdate => row[0].gsub(/\//,'-'),
@@ -107,13 +109,13 @@ CSV.open("./data/torihikiGenbutsu.csv","r") do |row|
   db.execute(sql, new_item)
 end
 
-if File.exist?("./data/torihikiShinyo.csv") then
+if File.exist?("#{PATH_DATA_SHINYO}") then
   sql = "DELETE FROM margine;"
   db.execute(sql)
 end
 
 #信用取引CSVデータの読み込み
-CSV.open("./data/torihikiShinyo.csv","r") do |row|
+CSV.open("#{PATH_DATA_SHINYO}","r") do |row|
   next if row[2].to_i == 0  # CSVヘッダ部除外
   new_item = {
   :agreementdate => row[0].gsub(/\//,'-'),

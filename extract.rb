@@ -2,9 +2,12 @@
 require 'rubygems'
 require 'sqlite3'
 require 'kconv'
+require 'fixednumber'
+
 $KCODE = 'UTF8'
 
-db = SQLite3::Database.new("./db/records.sqlite3")
+#db = SQLite3::Database.new("./db/records.sqlite3")
+db = SQLite3::Database.new("#{PATH_DB}")
 
 # 年間損益
 puts "=== 年間損益  ==="
