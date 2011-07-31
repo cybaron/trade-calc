@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby -Ku
 require 'rubygems'
 require 'sqlite3'
+require 'kconv'
+$KCODE = 'UTF8'
 
 db = SQLite3::Database.new("./db/records.sqlite3")
 
@@ -18,7 +20,7 @@ sql = <<SQL
   ;
 SQL
 db.execute(sql) do |row|
-  p row
+  printf("%10d\n", row[0])
 end
 
 # 年間損益(銘柄単位)
@@ -37,7 +39,9 @@ sql = <<SQL
   ;
 SQL
 db.execute(sql) do |row|
-  p row
+  printf("%4d", row[0])
+  print(sprintf("|%-*s|",65 + row[1].length - row[1].tosjis.length,row[1]))
+  printf("%10d|\n", row[2])
 end
   
 # 年間売買手数料
@@ -54,7 +58,7 @@ sql = <<SQL
   ;
 SQL
 db.execute(sql) do |row|
-  p row
+  printf("%10d\n", row[0])
 end
 
 # 月毎売買手数料
@@ -67,7 +71,7 @@ sql = <<SQL
   FROM margine
 SQL
 db.execute(sql) do |row|
-  p row
+  printf("%10d %10d\n", row[0], row[1])
 end
 
 # 買方金利・貸株料（銘柄単位）
@@ -79,5 +83,7 @@ sql = <<SQL
   ORDER BY stockcode
 SQL
 db.execute(sql) do |row|
-  p row
+  printf("%4d", row[0])
+  print(sprintf("|%-*s|",65 + row[1].length - row[1].tosjis.length,row[1]))
+  printf("%10d|%10d|\n", row[2], row[3])
 end
