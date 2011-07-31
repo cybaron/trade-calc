@@ -63,6 +63,21 @@ end
 
 # 月毎売買手数料
 puts "=== 月毎売買手数料 ==="
+sql = <<SQL
+  SELECT strftime('%Y-%m',agreementdate) AS month,
+    SUM(commission)+SUM(commissiontax) AS price
+  FROM(
+  SELECT agreementdate,stockcode,stockname,commission,commissiontax
+  FROM spot
+  UNION ALL
+  SELECT agreementdate,stockcode,stockname,commission,commissiontax
+  FROM margine
+  ) AS t
+  GROUP BY month
+SQL
+db.execute(sql) do |row|
+  printf("%s %7d\n", row[0], row[1])
+end
 
 # 年間買方金利・貸株料
 puts "=== 年間 買方金利・貸株料 ==="
