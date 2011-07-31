@@ -2,6 +2,7 @@
 require 'rubygems'
 require 'csv'
 require 'sqlite3'
+require 'kconv'
 
 spot = Array.new
 margine = Array.new
@@ -75,11 +76,11 @@ spot.each do |one|
   :agreementdate => one[0].gsub(/\//,'-'),
   :agreementno => one[1],
   :stockcode => one[2],
-  :stockname => one[3],
-  :exchangedivision => one[4],
-  :tradedivision => one[5],
-  :market => one[6],
-  :account => one[7],
+  :stockname => one[3].toutf8,
+  :exchangedivision => one[4].toutf8,
+  :tradedivision => one[5].toutf8,
+  :market => one[6].toutf8,
+  :account => one[7].toutf8,
   :agreementamount => one[8],
   :agreementprice => one[9],
   :commission => one[10],
@@ -120,12 +121,12 @@ CSV.open("./data/torihikiShinyo.csv","r") do |row|
   :agreementdate => row[0].gsub(/\//,'-'),
   :agreementno => row[1],
   :stockcode => row[2],
-  :stockname => row[3],
-  :exchangedivision => row[4],
-  :tradedivision => row[5],
-  :market => row[6],
-  :account => row[7],
-  :margindivision => row[8],
+  :stockname => row[3].toutf8,
+  :exchangedivision => row[4].toutf8,
+  :tradedivision => row[5].toutf8,
+  :market => row[6].toutf8,
+  :account => row[7].toutf8,
+  :margindivision => row[8].toutf8,
   :agreementamount => row[9],
   :agreementprice => row[10],
   :commission => row[11],
