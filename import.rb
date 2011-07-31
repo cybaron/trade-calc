@@ -61,32 +61,29 @@ unless(db.execute("SELECT tbl_name FROM sqlite_master WHERE type == 'table'").fl
   db.execute(sql)
 end
 
-#現物CSVデータの読み込み
-#約定日時,約定番号,銘柄コード,銘柄名,取引区分,売買区分,市場,口座,約定数量,約定単価,手数料,手数料消費税,受渡金額,受渡日
-CSV.open("./data/torihikiGenbutsu.csv","r") do |row|
-#CSV.open("./data/sample.csv","r") do |row|
-  spot << row
+if File.exist?("./data/torihikiGenbutsu.csv") then
+  sql = "DELETE FROM spot;"
+  db.execute(sql)
 end
 
-sql = "DELETE FROM spot;"
-db.execute(sql)
-
-spot.each do |one|
+#現物CSVデータの読み込み
+CSV.open("./data/torihikiGenbutsu.csv","r") do |row|
+  next if row[2].to_i == 0  # CSVヘッダ部除外
   new_item = {
-  :agreementdate => one[0].gsub(/\//,'-'),
-  :agreementno => one[1],
-  :stockcode => one[2],
-  :stockname => one[3].toutf8,
-  :exchangedivision => one[4].toutf8,
-  :tradedivision => one[5].toutf8,
-  :market => one[6].toutf8,
-  :account => one[7].toutf8,
-  :agreementamount => one[8],
-  :agreementprice => one[9],
-  :commission => one[10],
-  :commissiontax => one[11],
-  :deliverymoney => one[12],
-  :deliveryday => one[13].gsub(/\//,'-')
+  :agreementdate => row[0].gsub(/\//,'-'),
+  :agreementno => row[1],
+  :stockcode => row[2],
+  :stockname => row[3].toutf8,
+  :exchangedivision => row[4].toutf8,
+  :tradedivision => row[5].toutf8,
+  :market => row[6].toutf8,
+  :account => row[7].toutf8,
+  :agreementamount => row[8],
+  :agreementprice => row[9],
+  :commission => row[10],
+  :commissiontax => row[11],
+  :deliverymoney => row[12],
+  :deliveryday => row[13].gsub(/\//,'-')
   }
 
   sql = "INSERT INTO spot VALUES(
@@ -110,13 +107,14 @@ spot.each do |one|
   db.execute(sql, new_item)
 end
 
-sql = "DELETE FROM margine;"
-db.execute(sql)
+if File.exist?("./data/torihikiShinyo.csv") then
+  sql = "DELETE FROM margine;"
+  db.execute(sql)
+end
 
 #信用取引CSVデータの読み込み
-#約定日時,約定番号,銘柄コード,銘柄名,取引区分,売買区分,市場,口座,信用区分,約定数量,約定単価,手数料,手数料消費税,建数量,建単価,新規手数料,新規手数料消費税,管理費,名義書換料,金利,貸株料,品貸料,受渡金額,受渡日
 CSV.open("./data/torihikiShinyo.csv","r") do |row|
-#  margine << row
+  next if row[2].to_i == 0  # CSVヘッダ部除外
   new_item = {
   :agreementdate => row[0].gsub(/\//,'-'),
   :agreementno => row[1],
