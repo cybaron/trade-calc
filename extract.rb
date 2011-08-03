@@ -6,7 +6,18 @@ require 'fixednumber'
 
 $KCODE = 'UTF8'
 
-#db = SQLite3::Database.new("./db/records.sqlite3")
+class Integer
+  def to_c
+    str = to_s
+    tmp = ""
+    while(str =~ /([-+]?.*\d)(\d\d\d)/) do
+      str = $1
+      tmp = ",#{$2}" + tmp
+    end
+    str + tmp
+  end
+end
+
 db = SQLite3::Database.new("#{PATH_DB}")
 
 # 年間損益
@@ -23,7 +34,7 @@ sql = <<SQL
   ;
 SQL
 db.execute(sql) do |row|
-  printf("%10d\n", row[0])
+  printf("%s\n", row[0].to_i.to_c)
 end
 
 # 月別損益
@@ -41,7 +52,7 @@ sql = <<SQL
   ;
 SQL
 db.execute(sql) do |row|
-  printf("%s %10d\n", row[0], row[1])
+  printf("%s %15s\n", row[0], row[1].to_i.to_c)
 end
 
 # 年間損益(銘柄単位)
@@ -62,7 +73,7 @@ SQL
 db.execute(sql) do |row|
   printf("%4d", row[0])
   print(sprintf("|%-*s|",63 + row[1].length - row[1].tosjis.length, row[1]))
-  printf("%10d|\n", row[2])
+  printf("%10s|\n", row[2].to_i.to_c)
 end
   
 # 年間売買手数料
@@ -79,7 +90,7 @@ sql = <<SQL
   ;
 SQL
 db.execute(sql) do |row|
-  printf("%10d\n", row[0])
+  printf("%15s\n", row[0].to_i.to_c)
 end
 
 # 月毎売買手数料
@@ -97,7 +108,7 @@ sql = <<SQL
   GROUP BY month
 SQL
 db.execute(sql) do |row|
-  printf("%s %7d\n", row[0], row[1])
+  printf("%s %10s\n", row[0], row[1].to_i.to_c)
 end
 
 # 年間買方金利・貸株料
@@ -107,7 +118,7 @@ sql = <<SQL
   FROM margine
 SQL
 db.execute(sql) do |row|
-  printf("%10d %10d\n", row[0], row[1])
+  printf("%10s %10s\n", row[0].to_i.to_c, row[1].to_i.to_c)
 end
 
 # 買方金利・貸株料（銘柄単位）
@@ -121,7 +132,7 @@ SQL
 db.execute(sql) do |row|
   printf("%4d", row[0])
   print(sprintf("|%-*s|",63 + row[1].length - row[1].tosjis.length, row[1]))
-  printf("%10d|%10d|\n", row[2], row[3])
+  printf("%10s|%10s|\n", row[2].to_i.to_c, row[3].to_i.to_c)
 end
 
 db.close
