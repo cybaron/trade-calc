@@ -2,4 +2,5 @@ tmp/
 *.sqlite3
 data/*/
 data/*.csv
+data/*.xls
 *.swp
