@@ -26,6 +26,24 @@ db.execute(sql) do |row|
   printf("%10d\n", row[0])
 end
 
+# 月別損益
+puts "=== 月別損益 ==="
+sql = <<SQL
+  SELECT strftime('%Y-%m',agreementdate) AS month,SUM(deliverymoney)
+  FROM(
+  SELECT agreementdate,stockcode,stockname,deliverymoney
+  FROM spot
+  UNION ALL
+  SELECT agreementdate,stockcode,stockname,deliverymoney
+  FROM margine
+  ) AS t
+  GROUP BY month
+  ;
+SQL
+db.execute(sql) do |row|
+  printf("%s %10d\n", row[0], row[1])
+end
+
 # 年間損益(銘柄単位)
 puts "=== 年間損益（銘柄単位）==="
 sql = <<SQL
